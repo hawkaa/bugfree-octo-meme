@@ -13,7 +13,6 @@
 
 #define GLFW_DLL
 
-
 Octobrain::Octobrain(void)
 {
 
@@ -57,9 +56,22 @@ void Octobrain::init()
 	glDepthFunc(GL_LESS);
 
 	this->input = new Input(this->window);
-	this->renderer = new Renderer();
-	this->camera = new Camera(this->window, this->renderer, this->input);
-	
+	this->loader = new Loader();
+	this->renderer = new Renderer(this->loader, this->camera);
+	this->camera = new Camera(this->window, this->renderer, this->input);	
+	this->renderer->startMesh();
+	this->renderer->addVertexToMesh(glm::vec3(0,0,1));
+	this->renderer->addVertexToMesh(glm::vec3(0,1,0));
+	this->renderer->addVertexToMesh(glm::vec3(1,0,0));
+	glm::vec3 normal = glm::cross(glm::vec3(0,1,-1), glm::vec3(1,0,-1));
+	this->renderer->addNormalToMesh(normal);
+	this->renderer->addNormalToMesh(normal);
+	this->renderer->addNormalToMesh(normal);
+	this->renderer->addColorToMesh(glm::vec4(1,0,0,1));
+	this->renderer->addColorToMesh(glm::vec4(1,0,0,1));
+	this->renderer->addColorToMesh(glm::vec4(1,0,0,1));
+	this->renderer->addTriangleToMesh(1,2,3);
+	this->renderer->commitMesh();
 }
 
 void Octobrain::run()

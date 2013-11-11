@@ -1,0 +1,40 @@
+#version 330
+
+in vec3 position_worldspace;
+in vec3 normal_cameraspace;
+in vec3 vertexNormal_worldspace;
+in vec3 eyeDirection_cameraspace;
+in vec4 fragmentColor;
+
+out vec4 color;
+
+uniform mat4 MV;
+
+void main()
+{
+
+	vec3 lightColor = vec3(1,1,1);
+	float lightPower = 1.0f;
+
+	//vec3 materialDiffuseColor = fragmentColor.rgb;
+	//vec3 materialAmbientColor = vec3(0.3, 0.3, 0.3) * materialDiffuseColor;
+	//vec3 materialSpecularColor = vec3(0.1, 0.1, 0.1);
+
+	// Diffuse calculation
+	vec3 normalDir_worldspace = normalize(vertexNormal_worldspace);
+	vec3 lightDir = vec3(2, 5, -3);
+	lightDir = normalize(lightDir);
+
+	float diffuse = 0.3 + clamp(dot(normalDir_worldspace, lightDir), 0, 1);
+
+	vec3 normalDir = normalize(normal_cameraspace);
+	vec3 eyeDir = normalize(eyeDirection_cameraspace);
+	vec3 reflectDir = reflect(-lightDir, normalDir);
+
+	float specAttenuation = clamp(dot(eyeDir, reflectDir), 0, 1);
+
+	vec3 specular = vec3(0.3, 0.3, 0.3) * pow(specAttenuation, 5) *  lightPower;
+
+	color = fragmentColor * diffuse * lightPower + vec4(specular, 1.0);
+
+}

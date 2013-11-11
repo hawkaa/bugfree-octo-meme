@@ -3,6 +3,12 @@
 #include <vector>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include "loader.h"
+#include "imageobject.h"
+#include "camera.h"
+
+class Loader;
+class Camera;
 
 struct Mesh
 {
@@ -28,21 +34,34 @@ struct MeshBuffer
 class Renderer
 {
 public:
-	Renderer(void);
+	Renderer(Loader* loader, Camera* camera);
 	~Renderer(void);
 
 	void invalidate();
 	void invalidate(int);
 
 	void startMesh();
-	void addPointToMesh(glm::vec3);
-	void addPointsToMesh(glm::vec3 *points, ...);	
-	void addColorPointToMesh(glm::vec4 p);
-	void addColorPointsToMesh(glm::vec4 *points, ...);
+	void addVertexToMesh(glm::vec3);
+	void addColorToMesh(glm::vec4 p);
+	void addNormalToMesh(glm::vec3 p);
 	void addTriangleToMesh(unsigned int, unsigned int, unsigned int);
+
+	void addImageObject(ImageObject& object);
 	int commitMesh();
 
 private:
+	Camera* camera;
+
+	GLuint programID;
+
+	GLuint posHandle;
+	GLuint colorHandle;
+	GLuint normalHandle;
+
+	GLuint MVPHandle;
+	GLuint modelHandle;
+	GLuint viewHandle;
+
 	int currentid;
 	bool meshstarted;
 	std::vector<MeshBuffer> activeMeshes;

@@ -5,6 +5,8 @@
 #include "renderer.h"
 #include "input.h"
 
+class Renderer;
+
 class Camera
 {
 public:
