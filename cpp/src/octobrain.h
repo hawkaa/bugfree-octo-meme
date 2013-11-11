@@ -4,6 +4,8 @@
 #include "renderer.h"
 #include "camera.h"
 
+int lol[5][3];
+
 class Octobrain
 {
 public:
