@@ -7,6 +7,27 @@ template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
 
+// Hei Håkon, dette er awesome kode, er du ikke enig? :D
+float invsqrt(float number)
+{
+    long i;
+    float x2, y;
+    const float threehalves = 1.5f;
+ 
+    x2 = number*0.5f;
+    y = number;
+    i = *(long*)&y;
+    i = 0x5f3759df - (i >> 1);
+    y = *(float*)&i;
+    y = y *(threehalves-(x2*y*y));
+    return y;
+}
+
+void normalize(glm::vec3& point)
+{
+	point *= invsqrt(point.x*point.x + point.y*point.y + point.z*point.z);
+}
+
 Renderer::Renderer(Loader* loader, Camera* camera)
 {
 	this->camera = camera;
@@ -102,7 +123,7 @@ void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
 {
 	this->startMesh();
 
-	radius = radius/25;
+	radius = radius/40;
 
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
@@ -113,7 +134,7 @@ void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
 	
 	a = radius;
 	b = 2;
-	int res = 32;
+	int res = 16;
 
 	for(float i = -radius; i < radius+2*radius/res; i += 2*radius/res)
 	{
@@ -127,9 +148,10 @@ void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
 				in = 1;
 			}
 
-			glm::vec3 p = glm::vec3(sgn(radius)*sqrt(1-in*in)*cos(theta), i, sgn(radius)*sqrt(1-in*in)*sin(theta));
+			glm::vec3 p = glm::vec3(2*radius*sgn(radius)*sqrt(1-in*in)*cos(theta), 2*radius*sgn(radius)*sqrt(1-in*in)*sin(theta), i);
 			vertices.push_back(p);
-			normals.push_back(-p);
+			normalize(p);
+			normals.push_back(p);
 			colors.push_back(glm::vec4(p,1));
 		}
 	}
@@ -155,8 +177,7 @@ void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
 		this->addTriangleToMesh(indices[j], indices[j+1], indices[j+2]);
 	}
 
-	//this->addRotationToMesh(glm::vec3(0,90,0));
-	this->addTranslationToMesh(glm::vec3(x, y, 0)*(0.04f));
+	this->addTranslationToMesh(glm::vec3(x, y, 0)*(0.06f));
 	this->commitMesh();
 }
 

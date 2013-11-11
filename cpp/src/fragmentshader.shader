@@ -12,20 +12,16 @@ uniform mat4 MV;
 
 void main()
 {
+	vec3 lightPos = vec3(300,1000,0);
 
 	vec3 lightColor = vec3(1,1,1);
-	float lightPower = 1.0f;
+	float lightPower = 2.0f;
 
-	//vec3 materialDiffuseColor = fragmentColor.rgb;
-	//vec3 materialAmbientColor = vec3(0.3, 0.3, 0.3) * materialDiffuseColor;
-	//vec3 materialSpecularColor = vec3(0.1, 0.1, 0.1);
-
-	// Diffuse calculation
+	// Diffuse color
 	vec3 normalDir_worldspace = normalize(vertexNormal_worldspace);
-	vec3 lightDir = vec3(2, 5, -3);
-	lightDir = normalize(lightDir);
+	vec3 lightDir = normalize(position_worldspace - lightPos);
 
-	float diffuse = 0.3 + clamp(dot(normalDir_worldspace, lightDir), 0, 1);
+	float diffuse = max(0.3, dot(normalDir_worldspace, lightDir));
 
 	vec3 normalDir = normalize(normal_cameraspace);
 	vec3 eyeDir = normalize(eyeDirection_cameraspace);
@@ -33,8 +29,9 @@ void main()
 
 	float specAttenuation = clamp(dot(eyeDir, reflectDir), 0, 1);
 
-	vec3 specular = vec3(0.3, 0.3, 0.3) * pow(specAttenuation, 5) *  lightPower;
+	//vec3 specular = vec3(0.3, 0.3, 0.3) * pow(specAttenuation, 5) *  lightPower;
 
-	color = fragmentColor * diffuse * lightPower + vec4(specular, 1.0);
+	color = fragmentColor * diffuse * lightPower;
+	// + vec4(specular, 1.0);
 
 }
