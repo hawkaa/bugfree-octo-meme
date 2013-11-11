@@ -8,6 +8,7 @@ ImageObject::ImageObject(ObjectType type, float x, float y, float radius, glm::v
 	this->y = y;
 	this->radius = radius;
 	this->color = color;
+	printf("Laget %f %f %f\n", x, y, radius);
 }
 
 
@@ -17,11 +18,11 @@ ImageObject::~ImageObject(void)
 }
 
 ObjectType ImageObject::getObjectTypeFromString(char* s) {
-	if(s == "c") {
+	if(strcmp(s, "c") == 0) {
 		return ObjectType::CIRCLE;
-	} else if (s == "p") {
+	} else if (strcmp(s, "p") == 0) {
 		return ObjectType::POLYGON;
-	} else if(s == "s") {
+	} else if(strcmp(s, "s") == 0) {
 		return ObjectType::SQUARE;
 	} else {
 		return ObjectType::TRIANGLE;

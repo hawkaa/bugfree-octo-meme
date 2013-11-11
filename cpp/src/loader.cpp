@@ -40,13 +40,8 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 	glm::vec3 color;
 
 	int x, y, r, c, res;
-	char* s;
+	char s[128];
 
-	ImageObject* io;
-
-
-
-	printf("\n");
 
 	FILE* file = fopen(file_path, "r"); // Read-only
 
@@ -85,13 +80,10 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 		if(res == EOF) {
 			break;
 		}
-		io = new ImageObject(ImageObject::getObjectTypeFromString(s),x,y,r,colors[c-1]);
-
+		ImageObject io = ImageObject(ImageObject::getObjectTypeFromString(s),x,y,r,colors[c-1]);
+		this->renderer->addImageObject(io);
 
 	}
-
-
-	printf("\n");
 }
 /*
 HÅKON SE
