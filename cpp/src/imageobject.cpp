@@ -3,7 +3,11 @@
 
 ImageObject::ImageObject(ObjectType type, float x, float y, float radius, glm::vec3 color)
 {
-
+	this->type = type;
+	this->x = x;
+	this->y = y;
+	this->radius = radius;
+	this->color = color;
 }
 
 

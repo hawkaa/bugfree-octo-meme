@@ -85,7 +85,7 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 		if(res == EOF) {
 			break;
 		}
-		//io = new ImageObject();
+		io = new ImageObject(ImageObject::getObjectTypeFromString(s),x,y,r,colors[c-1]);
 
 
 	}
