@@ -36,5 +36,4 @@ void main()
 	vec3 specular = vec3(0.3, 0.3, 0.3) * pow(specAttenuation, 5) *  lightPower;
 
 	color = fragmentColor * diffuse * lightPower + vec4(specular, 1.0);
-
 }

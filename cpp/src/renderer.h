@@ -47,6 +47,8 @@ public:
 	void addImageObject(ImageObject& object);
 	int commitMesh();
 
+	void renderACube();
+
 private:
 	Camera* camera;
 

@@ -17,7 +17,6 @@ Renderer::Renderer(Loader* loader, Camera* camera)
 	this->colorHandle = glGetAttribLocation(this->programID, "vertexColor");
 	this->normalHandle = glGetAttribLocation(this->programID, "vertexNormal_modelspace");
 
-	currentid = -1;
 }
 
 Renderer::~Renderer(void)
@@ -31,16 +30,214 @@ void Renderer::invalidate(int id)
 	
 }
 
+
+void Renderer::renderACube()
+{
+	static const GLfloat g_vertex_buffer_data[] = { 
+		-1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+
+        // Right face
+        1.0f, 1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f,
+        1.0f, 1.0f, -1.0f,
+        1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+
+        // Back face
+        1.0f, 1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+
+        // Left face
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+
+        // Top face
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, -1.0f,
+
+        // Bottom face
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,
+	};
+
+	static const GLfloat g_color_buffer_data[] = { 
+		1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f, 1.0f,
+
+        // Right face (green)
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f, 1.0f,
+
+        // Back face (blue)
+        0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f,
+        0.0f, 0.0f, 1.0f, 1.0f,
+
+        // Left face (yellow)
+        1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f, 1.0f,
+
+        // Top face (cyan)
+        0.0f, 1.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f, 1.0f,
+        0.0f, 1.0f, 1.0f, 1.0f,
+
+        // Bottom face (magenta)
+        1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 1.0f
+	};
+
+	static const GLfloat g_normal_buffer_data[] = { 
+		    0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+
+            // Right face
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,
+
+            // Back face
+            0.0f, 0.0f, -1.0f,
+            0.0f, 0.0f, -1.0f,
+            0.0f, 0.0f, -1.0f,
+            0.0f, 0.0f, -1.0f,
+            0.0f, 0.0f, -1.0f,
+            0.0f, 0.0f, -1.0f,
+
+            // Left face
+            -1.0f, 0.0f, 0.0f,
+            -1.0f, 0.0f, 0.0f,
+            -1.0f, 0.0f, 0.0f,
+            -1.0f, 0.0f, 0.0f,
+            -1.0f, 0.0f, 0.0f,
+            -1.0f, 0.0f, 0.0f,
+
+            // Top face
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+
+            // Bottom face
+            0.0f, -1.0f, 0.0f,
+            0.0f, -1.0f, 0.0f,
+            0.0f, -1.0f, 0.0f,
+            0.0f, -1.0f, 0.0f,
+            0.0f, -1.0f, 0.0f,
+            0.0f, -1.0f, 0.0f
+	};
+
+	GLuint vertexBuffer;
+	glGenBuffers(1, &vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+
+	GLuint colorBuffer;
+	glGenBuffers(1, &colorBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+
+	GLuint normalBuffer;
+	glGenBuffers(1, &normalBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_normal_buffer_data), g_normal_buffer_data, GL_STATIC_DRAW);
+
+	glUseProgram(this->programID);
+
+	glm::mat4 viewMatrix = camera->getViewMatrix();
+	glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f));
+	glm::mat4 MVP = camera->getProjectionMatrix() * viewMatrix * modelMatrix;
+
+	glUniformMatrix4fv(MVPHandle, 1, GL_FALSE, &MVP[0][0]);
+	glUniformMatrix4fv(modelHandle, 1, GL_FALSE, &modelMatrix[0][0]);
+	glUniformMatrix4fv(viewHandle, 1, GL_FALSE, &viewMatrix[0][0]);	
+
+	glEnableVertexAttribArray(posHandle);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glVertexAttribPointer(posHandle, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);	
+
+	glEnableVertexAttribArray(colorHandle);
+	glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
+	glVertexAttribPointer(colorHandle, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glEnableVertexAttribArray(normalHandle);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glVertexAttribPointer(normalHandle, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glDisableVertexAttribArray(posHandle);
+	glDisableVertexAttribArray(colorHandle);
+	glDisableVertexAttribArray(normalHandle);
+}
+
 //Invalidates all meshes -> renders everything as soon as possible
 void Renderer::invalidate()
 {
 	std::vector<MeshBuffer>::iterator it;
+	//renderACube();
+
+	glUseProgram(this->programID);
 
 	for(it = activeMeshes.begin(); it != activeMeshes.end(); ++it)
 	{
+
 		glm::mat4 viewMatrix = camera->getViewMatrix();
 		glm::mat4 projectionMatrix = camera->getProjectionMatrix();
-		glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), it->translation);
+		glm::mat4 modelMatrix = glm::mat4(1.0f);
 		glm::mat4 MVP = projectionMatrix * viewMatrix * modelMatrix;
 	
 		glUniformMatrix4fv(MVPHandle, 1, GL_FALSE, &MVP[0][0]);
@@ -112,7 +309,7 @@ int Renderer::commitMesh()
 	glBindBuffer(GL_ARRAY_BUFFER, buffer.normalBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*uncommitedMesh.normals.size(), &uncommitedMesh.normals[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &buffer.vertexBuffer);
+	glGenBuffers(1, &buffer.colorBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer.colorBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4)*uncommitedMesh.colors.size(), &uncommitedMesh.colors[0], GL_STATIC_DRAW);
 	
@@ -125,7 +322,8 @@ int Renderer::commitMesh()
 	buffer.rotation = glm::vec3(1.0f);
 	buffer.scale = glm::vec3(1.0f);
 
-	printf("Mesh commited with %f vertices, %f normals, %f colorpoints, %f indices", uncommitedMesh.vertices.size(), uncommitedMesh.colors.size(), uncommitedMesh.normals.size(), uncommitedMesh.indices.size());
+	printf("Mesh commited with %d vertices, %d normals, %d colorpoints, %d indices", this->uncommitedMesh.vertices.size(), this->uncommitedMesh.colors.size(), this->uncommitedMesh.normals.size(), this->uncommitedMesh.indices.size());
+	activeMeshes.push_back(buffer);
 
 	uncommitedMesh.vertices.clear();
 	uncommitedMesh.colors.clear();
