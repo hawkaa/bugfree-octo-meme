@@ -22,7 +22,7 @@ void main()
 
 	// Diffuse calculation
 	vec3 normalDir_worldspace = normalize(vertexNormal_worldspace);
-	vec3 lightDir = vec3(2, -10, 0);
+	vec3 lightDir = vec3(2, 5, -3);
 	lightDir = normalize(lightDir);
 
 	float diffuse = 0.3 + clamp(dot(normalDir_worldspace, lightDir), 0, 1);
@@ -36,4 +36,5 @@ void main()
 	vec3 specular = vec3(0.3, 0.3, 0.3) * pow(specAttenuation, 5) *  lightPower;
 
 	color = fragmentColor * diffuse * lightPower + vec4(specular, 1.0);
+
 }

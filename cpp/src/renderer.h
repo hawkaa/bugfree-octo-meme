@@ -16,7 +16,9 @@ struct Mesh
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec4> colors;
 	std::vector<unsigned int> indices;
-
+	glm::vec3 translation;
+	glm::vec3 rotation;
+	glm::vec3 scale;
 };
 
 struct MeshBuffer
@@ -43,6 +45,10 @@ public:
 	void startMesh();
 	void addPointToMesh(glm::vec3& vertex, glm::vec4& color, glm::vec3& normal);
 	void addTriangleToMesh(unsigned int, unsigned int, unsigned int);
+	
+	void addTranslationToMesh(glm::vec3 translation);
+	void addRotationToMesh(glm::vec3 rotation);
+	void addScaleToMesh(glm::vec3 scale);
 
 	void createEllipsoid(float x, float y, float radius, glm::vec4 color);
 
@@ -50,8 +56,6 @@ public:
 	int commitMesh();
 
 	void renderACube();
-
-
 
 private:
 	Camera* camera;
