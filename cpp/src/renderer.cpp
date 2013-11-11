@@ -130,7 +130,7 @@ void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
 			glm::vec3 p = glm::vec3(sgn(radius)*sqrt(1-in*in)*cos(theta), i, sgn(radius)*sqrt(1-in*in)*sin(theta));
 			vertices.push_back(p);
 			normals.push_back(-p);
-			colors.push_back(color);
+			colors.push_back(glm::vec4(p,1));
 		}
 	}
 
