@@ -1,5 +1,7 @@
 #include "imageobject.h"
 #include <glm\glm.hpp>
+#include <stdio.h>
+#include <string>
 
 ImageObject::ImageObject(ObjectType type, float x, float y, float radius, glm::vec3 color)
 {

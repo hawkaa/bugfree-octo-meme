@@ -30,7 +30,6 @@ void Renderer::invalidate(int id)
 	
 }
 
-
 void Renderer::renderACube()
 {
 	static const GLfloat g_vertex_buffer_data[] = { 
@@ -228,7 +227,6 @@ void Renderer::renderACube()
 void Renderer::invalidate()
 {
 	std::vector<MeshBuffer>::iterator it;
-	//renderACube();
 
 	glUseProgram(this->programID);
 
@@ -264,6 +262,11 @@ void Renderer::invalidate()
 		glDisableVertexAttribArray(colorHandle);
 		glDisableVertexAttribArray(normalHandle);
 	}	
+}
+
+void Renderer::addImageObject(ImageObject& object)
+{
+	
 }
 
 void Renderer::startMesh()
