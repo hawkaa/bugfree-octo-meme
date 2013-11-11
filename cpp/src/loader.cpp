@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_DEPRECATE
 #include "loader.h"
 #include <stdio.h>
 #include <string>
@@ -32,7 +33,6 @@ void Loader::setRenderer(Renderer* renderer)
 	this->renderer = renderer;
 }
 
-
 void Loader::loadObjectsFromFile(const char* file_path) {
 	int numColors;
 	int tmpColors[4];
@@ -41,7 +41,6 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 
 	int x, y, r, c, res;
 	char s[128];
-
 
 	FILE* file = fopen(file_path, "r"); // Read-only
 
