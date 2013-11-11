@@ -2,15 +2,12 @@
 #include <glm\glm.hpp>
 #include <GL\glew.h>
 #include <GL\glfw3.h>
-#include "renderer.h"
 #include "input.h"
-
-class Renderer;
 
 class Camera
 {
 public:
-	Camera(GLFWwindow* window, Renderer* renderer, Input* input);
+	Camera(GLFWwindow* window, Input* input);
 	~Camera(void);
 
 	void move(float dt);
@@ -23,7 +20,6 @@ public:
 private:
 
 	GLFWwindow* window;
-	Renderer* renderer;
 	Input* input;
 
 	static int fov;

@@ -11,10 +11,9 @@ float Camera::farView = 100.0f;
 
 int Camera::fov = 60;
 
-Camera::Camera(GLFWwindow* window, Renderer* renderer, Input* input)
+Camera::Camera(GLFWwindow* window, Input* input)
 {
 	this->window = window;
-	this->renderer = renderer;
 	this->input = input;
 	this->viewX = 3.14f;
 	this->viewY = 0.0f;
@@ -22,9 +21,9 @@ Camera::Camera(GLFWwindow* window, Renderer* renderer, Input* input)
 	this->speed = 5.0f;
 	this->mouseSpeed = 1.0f;
 
-	pos = glm::vec3(0, 0, 10);
-	dir = glm::vec3(cos(viewY)*sin(viewX), sin(viewY), cos(viewY)*cos(viewX));
-	right = glm::vec3(cos(viewX), 0, -sin(viewX));
+	this->pos = glm::vec3(0, 0, 5);
+	this->dir = glm::vec3(cos(viewY)*sin(viewX), sin(viewY), cos(viewY)*cos(viewX));
+	this->right = glm::vec3(cos(viewX), 0, -sin(viewX));
 
 	up = glm::cross(dir, right);
 
@@ -66,12 +65,12 @@ void Camera::move(float dt)
 
 	if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		pos -= right * dt * speed;
+		pos += right * dt * speed;
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		pos += right * dt * speed;
+		pos -= right * dt * speed;
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
@@ -107,7 +106,6 @@ glm::mat4& Camera::getViewMatrix()
 glm::mat4& Camera::getProjectionMatrix()
 {
 	return this->projectionMatrix;
-
 }
 
 glm::vec3& Camera::getPos()
