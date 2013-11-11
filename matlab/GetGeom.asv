@@ -8,16 +8,15 @@ function [ out ] = GetGeom(BW, SE)
     [Labeled, n] = bwlabel(Dilated, 8);
     imshow(Labeled, [0 n]);
     
-    out = zeros(0,3);
+    out = zeros(0,2);
     
     for i=1:n
         [r, c] = find(Labeled==i);
-        radius = sqrt(size(r,1)/pi);
+        radius = sqrt(size(r,1)/pi;
+        size(r, 1)
         out(end+1,1) = mean(c);
         out(end,2) = mean(r);
-        out(end, 3) = radius;
     end
-    out = round(out);
     out
 
 
