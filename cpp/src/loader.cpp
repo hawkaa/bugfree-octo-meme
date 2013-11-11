@@ -13,6 +13,7 @@
 
 #include <GL/glew.h>
 #include "loader.h"
+#include "imageobject.h"
 
 using namespace std;
 
@@ -31,6 +32,67 @@ void Loader::setRenderer(Renderer* renderer)
 	this->renderer = renderer;
 }
 
+
+void Loader::loadObjectsFromFile(const char* file_path) {
+	int numColors;
+	int tmpColors[4];
+	std::vector< glm::vec3> colors;
+	glm::vec3 color;
+
+	int x, y, r, c, res;
+	char* s;
+
+	ImageObject* io;
+
+
+
+	printf("\n");
+
+	FILE* file = fopen(file_path, "r"); // Read-only
+
+	if(file == NULL) {
+		printf("Could not open objects file at: '%s'\n", file_path);
+		return;
+	}
+
+	// Reading number of lines
+	
+	fscanf(file, "%i\n", &numColors);
+
+	/*
+	 * Create color array
+	 */
+	for(int i = 0; i < numColors; ++i)
+	{
+		// Read file
+		fscanf(file, "%i %i %i %i\n", &tmpColors[0], &tmpColors[1], &tmpColors[2], &tmpColors[3]);
+
+		// Create color vector
+		color.x = tmpColors[1];
+		color.y = tmpColors[2];
+		color.z = tmpColors[3];
+
+		// Add color vector to colors vector
+		colors.push_back(color);
+	}
+
+	/*
+	 * Loop through end of file to find all the vertices
+	 */
+
+	while(true) {
+		res = fscanf(file, "%i %i %i %s %i\n", &x, &y, &r, &s, &c);
+		if(res == EOF) {
+			break;
+		}
+		//io = new ImageObject();
+
+
+	}
+
+
+	printf("\n");
+}
 /*
 HÅKON SE
 */

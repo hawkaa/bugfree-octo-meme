@@ -11,3 +11,15 @@ ImageObject::~ImageObject(void)
 {
 
 }
+
+ObjectType ImageObject::getObjectTypeFromString(char* s) {
+	if(s == "c") {
+		return ObjectType::CIRCLE;
+	} else if (s == "p") {
+		return ObjectType::POLYGON;
+	} else if(s == "s") {
+		return ObjectType::SQUARE;
+	} else {
+		return ObjectType::TRIANGLE;
+	}
+};

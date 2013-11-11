@@ -62,6 +62,7 @@ void Octobrain::init()
 	this->renderer = new Renderer(this->loader, this->camera);
 	this->camera = new Camera(this->window, this->renderer, this->input);
 	this->loader->setRenderer(this->renderer);
+	this->loader->loadObjectsFromFile(Octobrain::objectsFileName);
 
 	this->renderer->startMesh();
 	glm::vec3 p1, p2, p3;
