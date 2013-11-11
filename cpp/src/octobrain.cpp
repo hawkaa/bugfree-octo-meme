@@ -64,30 +64,6 @@ void Octobrain::init()
 	this->loader->setRenderer(this->renderer);
 	this->loader->loadObjectsFromFile(Octobrain::objectsFileName);
 
-	this->renderer->startMesh();
-	glm::vec3 p1, p2, p3, p4;
-	p1 = glm::vec3(1,0,0);
-	p2 = glm::vec3(0,1,0);
-	p3 = glm::vec3(0,0,1);
-	p4 = glm::vec3(1,0,1);
-	glm::vec3 n = glm::cross(p2-p1, p3-p1);
-	glm::vec4 c = glm::vec4(1,0,0,1);
-
-	this->renderer->startMesh();
-	this->renderer->addPointToMesh(p1,c,n);
-	this->renderer->addPointToMesh(p2,c,n);
-	this->renderer->addPointToMesh(p3,c,n);
-	this->renderer->addTriangleToMesh(1,2,3);
-	this->renderer->commitMesh();
-
-	this->renderer->startMesh();
-	this->renderer->addPointToMesh(p1,c,n);
-	this->renderer->addPointToMesh(p2,c,n);
-	this->renderer->addPointToMesh(p3,c,n);
-	this->renderer->addPointToMesh(p4,c,n);
-	this->renderer->addTriangleToMesh(3,2,1);
-	this->renderer->addTriangleToMesh(2,1,4);
-	this->renderer->commitMesh();
 }
 
 void Octobrain::run()

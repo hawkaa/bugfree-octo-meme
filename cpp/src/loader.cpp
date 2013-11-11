@@ -36,8 +36,8 @@ void Loader::setRenderer(Renderer* renderer)
 void Loader::loadObjectsFromFile(const char* file_path) {
 	int numColors;
 	float tmpColors[4];
-	std::vector< glm::vec3 > colors;
-	glm::vec3 color;
+	std::vector<glm::vec4> colors;
+	glm::vec4 color;
 
 	float x, y, r;
 	int c, res;
@@ -66,6 +66,7 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 		color.x = tmpColors[1];
 		color.y = tmpColors[2];
 		color.z = tmpColors[3];
+		color.w = 1.0f;
 
 		// Add color vector to colors vector
 		colors.push_back(color);

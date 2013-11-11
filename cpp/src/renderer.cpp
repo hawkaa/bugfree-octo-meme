@@ -3,6 +3,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 Renderer::Renderer(Loader* loader, Camera* camera)
 {
 	this->camera = camera;
@@ -16,7 +20,6 @@ Renderer::Renderer(Loader* loader, Camera* camera)
 	this->posHandle = glGetAttribLocation(this->programID, "vertexPosition_modelspace");
 	this->colorHandle = glGetAttribLocation(this->programID, "vertexColor");
 	this->normalHandle = glGetAttribLocation(this->programID, "vertexNormal_modelspace");
-
 }
 
 Renderer::~Renderer(void)
@@ -266,7 +269,72 @@ void Renderer::invalidate()
 
 void Renderer::addImageObject(ImageObject& object)
 {
+	switch(object.getType())
+	{
+	case CIRCLE:
+		createEllipsoid(object.getX(), object.getY(), object.getRadius(), object.getColor());
+		break;
+	case TRIANGLE:
+	case SQUARE:
+	case POLYGON:
+		break;
+	}
+}
+
+void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
+{
+	this->startMesh();
+
+	radius = radius/25;
+
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec4> colors;
+	std::vector<unsigned int> indices;
+
+	int a, b;
 	
+	a = 1;
+	b = 1;
+	int res = 32;
+
+	for(float i = -radius; i < radius+2*radius/res; i += 2*radius/res)
+	{
+		for(float theta = 0; theta < 2*3.14f-2*3.14/res; theta += 2*3.14/res)
+		{
+			float in = i/radius;
+			//Ninjafix
+			if(in > 1)
+				in = 1;
+			glm::vec3 p = glm::vec3(a*radius*sgn(radius)*sqrt(1-in*in)*cos(theta), i, b*radius*sgn(radius)*sqrt(1-in*in)*sin(theta));
+			vertices.push_back(p);
+			normals.push_back(-p);
+			colors.push_back(glm::vec4(p, 1.0));
+		}
+	}
+
+	for(int i = 0; i < vertices.size()-res; ++i)
+	{
+		indices.push_back(i);
+		indices.push_back(i+res);
+		indices.push_back(i+1);
+
+		indices.push_back(i+res);
+		indices.push_back(i+res+1);
+		indices.push_back(i+1);
+	}
+
+	for(int i = 0; i < vertices.size(); ++i)
+	{
+		this->addPointToMesh(vertices[i], colors[i], normals[i]);
+	}
+
+	for(int j = 0; j < indices.size(); j+=3)
+	{
+		this->addTriangleToMesh(indices[j], indices[j+1], indices[j+2]);
+	}
+
+	this->commitMesh();
 }
 
 void Renderer::startMesh()

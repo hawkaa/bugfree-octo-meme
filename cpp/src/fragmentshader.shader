@@ -22,7 +22,7 @@ void main()
 
 	// Diffuse calculation
 	vec3 normalDir_worldspace = normalize(vertexNormal_worldspace);
-	vec3 lightDir = vec3(2, 5, -3);
+	vec3 lightDir = vec3(2, -10, 0);
 	lightDir = normalize(lightDir);
 
 	float diffuse = 0.3 + clamp(dot(normalDir_worldspace, lightDir), 0, 1);

@@ -85,13 +85,13 @@ void Camera::move(float dt)
 
 	if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 	{
-		speed += 5;
+		speed += 0.1;
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 	{
 		if(speed > 0)
-			speed -= 5;
+			speed -= 0.1;
 	}
 
 	viewMatrix = glm::lookAt(pos, pos + dir, up);

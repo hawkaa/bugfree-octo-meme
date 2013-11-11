@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string>
 
-ImageObject::ImageObject(ObjectType type, float x, float y, float radius, glm::vec3 color)
+ImageObject::ImageObject(ObjectType type, float x, float y, float radius, glm::vec4 color)
 {
 	this->type = type;
 	this->x = x;
@@ -32,7 +32,7 @@ ObjectType ImageObject::getObjectTypeFromString(char* s) {
 };
 
 float ImageObject::getX() { return this->x; };
-float ImageObject::getY() { return this->x; };
-float ImageObject::getRadius() { return this->x; };
-glm::vec3 ImageObject::getColor() { return this->color; };
+float ImageObject::getY() { return this->y; };
+float ImageObject::getRadius() { return this->radius; };
+glm::vec4 ImageObject::getColor() { return this->color; };
 ObjectType ImageObject::getType() { return this->type; };

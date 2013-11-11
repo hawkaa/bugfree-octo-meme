@@ -44,10 +44,14 @@ public:
 	void addPointToMesh(glm::vec3& vertex, glm::vec4& color, glm::vec3& normal);
 	void addTriangleToMesh(unsigned int, unsigned int, unsigned int);
 
+	void createEllipsoid(float x, float y, float radius, glm::vec4 color);
+
 	void addImageObject(ImageObject& object);
 	int commitMesh();
 
 	void renderACube();
+
+
 
 private:
 	Camera* camera;

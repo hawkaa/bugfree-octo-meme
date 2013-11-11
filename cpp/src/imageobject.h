@@ -12,7 +12,7 @@ enum ObjectType
 class ImageObject
 {
 public:
-	ImageObject(ObjectType type, float x, float y, float radius, glm::vec3 color);
+	ImageObject(ObjectType type, float x, float y, float radius, glm::vec4 color);
 	~ImageObject(void);
 
 	static ObjectType getObjectTypeFromString(char* s);
@@ -21,12 +21,12 @@ public:
 	float getY();
 	float getRadius();
 	ObjectType getType();
-	glm::vec3 getColor();
+	glm::vec4 getColor();
 
 private:
 	float x,y,radius;
 	ObjectType type;
-	glm::vec3 color;
+	glm::vec4 color;
 
 };
 
