@@ -41,9 +41,7 @@ public:
 	void invalidate(int);
 
 	void startMesh();
-	void addVertexToMesh(glm::vec3);
-	void addColorToMesh(glm::vec4 p);
-	void addNormalToMesh(glm::vec3 p);
+	void addPointToMesh(glm::vec3& vertex, glm::vec4& color, glm::vec3& normal);
 	void addTriangleToMesh(unsigned int, unsigned int, unsigned int);
 
 	void addImageObject(ImageObject& object);

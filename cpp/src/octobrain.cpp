@@ -13,6 +13,8 @@
 
 #define GLFW_DLL
 
+const char* Octobrain::objectsFileName = "objects.txt";
+
 Octobrain::Octobrain(void)
 {
 
@@ -58,18 +60,20 @@ void Octobrain::init()
 	this->input = new Input(this->window);
 	this->loader = new Loader();
 	this->renderer = new Renderer(this->loader, this->camera);
-	this->camera = new Camera(this->window, this->renderer, this->input);	
+	this->camera = new Camera(this->window, this->renderer, this->input);
+	this->loader->setRenderer(this->renderer);
+
 	this->renderer->startMesh();
-	this->renderer->addVertexToMesh(glm::vec3(0,0,1));
-	this->renderer->addVertexToMesh(glm::vec3(0,1,0));
-	this->renderer->addVertexToMesh(glm::vec3(1,0,0));
-	glm::vec3 normal = glm::cross(glm::vec3(0,1,-1), glm::vec3(1,0,-1));
-	this->renderer->addNormalToMesh(normal);
-	this->renderer->addNormalToMesh(normal);
-	this->renderer->addNormalToMesh(normal);
-	this->renderer->addColorToMesh(glm::vec4(1,0,0,1));
-	this->renderer->addColorToMesh(glm::vec4(1,0,0,1));
-	this->renderer->addColorToMesh(glm::vec4(1,0,0,1));
+	glm::vec3 p1, p2, p3;
+	p1 = glm::vec3(1,0,0);
+	p2 = glm::vec3(0,1,0);
+	p3 = glm::vec3(0,0,1);
+	glm::vec3 n = glm::cross(p1-p2, p1-p3);
+	glm::vec4 c = glm::vec4(1,0,0,1);
+	this->renderer->startMesh();
+	this->renderer->addPointToMesh(p1,c,n);
+	this->renderer->addPointToMesh(p2,c,n);
+	this->renderer->addPointToMesh(p3,c,n);
 	this->renderer->addTriangleToMesh(1,2,3);
 	this->renderer->commitMesh();
 }
