@@ -75,20 +75,11 @@ void Renderer::startMesh()
 	meshstarted = true;
 }
 
-void Renderer::addVertexToMesh(glm::vec3 p)
-{
-	this->uncommitedMesh.vertices.push_back(p);
-}
-
-void Renderer::addColorToMesh(glm::vec4 p)
-{
-	this->uncommitedMesh.colors.push_back(p);
-
-}
-
-void Renderer::addNormalToMesh(glm::vec3 p)
-{
-	this->uncommitedMesh.normals.push_back(p);
+void Renderer::addPointToMesh(glm::vec3 &vertex, glm::vec4 &color, glm::vec3 &normal)
+{	
+	this->uncommitedMesh.vertices.push_back(vertex);
+	this->uncommitedMesh.colors.push_back(color);
+	this->uncommitedMesh.normals.push_back(normal);
 }
 
 void Renderer::addTriangleToMesh(unsigned int p1, unsigned int p2, unsigned int p3)
@@ -97,7 +88,6 @@ void Renderer::addTriangleToMesh(unsigned int p1, unsigned int p2, unsigned int 
 	this->uncommitedMesh.indices.push_back(p2);
 	this->uncommitedMesh.indices.push_back(p3);
 }
-
 
 int Renderer::commitMesh()
 {
@@ -134,6 +124,8 @@ int Renderer::commitMesh()
 	buffer.translation = glm::vec3(1.0f);
 	buffer.rotation = glm::vec3(1.0f);
 	buffer.scale = glm::vec3(1.0f);
+
+	printf("Mesh commited with %f vertices, %f normals, %f colorpoints, %f indices", uncommitedMesh.vertices.size(), uncommitedMesh.colors.size(), uncommitedMesh.normals.size(), uncommitedMesh.indices.size());
 
 	uncommitedMesh.vertices.clear();
 	uncommitedMesh.colors.clear();

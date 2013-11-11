@@ -17,10 +17,12 @@ public:
 	void cleanup();
 
 	static const int screenWidth = 800, screenHeight = 600;
-
+	static const char* objectsFileName;
 private:
 	Input* input;
 	Loader* loader;
 	Renderer* renderer;
 	Camera* camera;
+
+
 };
