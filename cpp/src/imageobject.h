@@ -16,6 +16,12 @@ public:
 	~ImageObject(void);
 
 	static ObjectType getObjectTypeFromString(char* s);
+	
+	float getX();
+	float getY();
+	float getRadius();
+	ObjectType getType();
+	glm::vec3 getColor();
 
 private:
 	float x,y,radius;

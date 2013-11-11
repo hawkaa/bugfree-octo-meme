@@ -35,11 +35,12 @@ void Loader::setRenderer(Renderer* renderer)
 
 void Loader::loadObjectsFromFile(const char* file_path) {
 	int numColors;
-	int tmpColors[4];
-	std::vector< glm::vec3> colors;
+	float tmpColors[4];
+	std::vector< glm::vec3 > colors;
 	glm::vec3 color;
 
-	int x, y, r, c, res;
+	float x, y, r;
+	int c, res;
 	char s[128];
 
 	FILE* file = fopen(file_path, "r"); // Read-only
@@ -59,7 +60,7 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 	for(int i = 0; i < numColors; ++i)
 	{
 		// Read file
-		fscanf(file, "%i %i %i %i\n", &tmpColors[0], &tmpColors[1], &tmpColors[2], &tmpColors[3]);
+		fscanf(file, "%f %f %f %i\n", &tmpColors[0], &tmpColors[1], &tmpColors[2], &tmpColors[3]);
 
 		// Create color vector
 		color.x = tmpColors[1];
@@ -75,7 +76,7 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 	 */
 
 	while(true) {
-		res = fscanf(file, "%i %i %i %s %i\n", &x, &y, &r, &s, &c);
+		res = fscanf(file, "%f %f %f %s %i\n", &x, &y, &r, &s, &c);
 		if(res == EOF) {
 			break;
 		}

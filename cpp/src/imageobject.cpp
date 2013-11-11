@@ -30,3 +30,9 @@ ObjectType ImageObject::getObjectTypeFromString(char* s) {
 		return ObjectType::TRIANGLE;
 	}
 };
+
+float ImageObject::getX() { return this->x; };
+float ImageObject::getY() { return this->x; };
+float ImageObject::getRadius() { return this->x; };
+glm::vec3 ImageObject::getColor() { return this->color; };
+ObjectType ImageObject::getType() { return this->type; };
