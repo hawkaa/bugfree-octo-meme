@@ -5,8 +5,9 @@ function [ out ] = GetGeom(BW, SE)
     
     Dilated = imdilate(Eroded, SE);
     
+    
     [Labeled, n] = bwlabel(Dilated, 8);
-    imshow(Labeled, [0 n]);
+    %imshow(Labeled, [0 n]);
     
     out = zeros(0,3);
     
@@ -18,7 +19,6 @@ function [ out ] = GetGeom(BW, SE)
         out(end, 3) = radius;
     end
     out = round(out);
-    out
 
 
 end
