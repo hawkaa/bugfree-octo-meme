@@ -18,7 +18,7 @@ public:
 	static ObjectType getObjectTypeFromString(char* s);
 
 private:
-	int x,y,radius;
+	float x,y,radius;
 	ObjectType type;
 	glm::vec3 color;
 
