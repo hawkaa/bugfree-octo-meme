@@ -16,4 +16,4 @@ colors{6} = {[255 128 0], [155 200;40 90; 0 55]}; % Orange
 
 SE = strel('disk', 4);
 
-PopTheNonStops(A03, 'test.txt', colors, SE, 'c');
+PopTheNonStops(A01, 'test.txt', colors, SE, 'c');

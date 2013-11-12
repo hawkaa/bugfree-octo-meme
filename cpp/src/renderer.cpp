@@ -152,6 +152,7 @@ void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
 			vertices.push_back(p);
 			normalize(p);
 			normals.push_back(p);
+			//colors.push_back(color);
 			colors.push_back(glm::vec4(p,1));
 		}
 	}
@@ -219,6 +220,12 @@ void Renderer::addScaleToMesh(glm::vec3 scale)
 	this->uncommitedMesh.scale = scale;
 }
 
+void Renderer::addTextureToMesh(GLuint textureID)
+{
+
+}
+
+
 int Renderer::commitMesh()
 {
 	if(this->uncommitedMesh.indices.size() == 0)
@@ -265,4 +272,26 @@ int Renderer::commitMesh()
 
 	this->meshstarted = false;
 	return currentid;	
+}
+
+void Renderer::setBufferTranslation(int id, glm::vec3 translation)
+{
+	if(id > activeMeshes.size() || id < 0)
+		return;
+	activeMeshes[id].translation = translation;
+}
+
+void Renderer::setBufferRotation(int id, glm::vec3 rotation)
+{
+	if(id > activeMeshes.size() || id < 0)
+		return;
+	activeMeshes[id].rotation = rotation;
+}
+
+void Renderer::setBufferScale(int id, glm::vec3 scale)
+{
+	if(id > activeMeshes.size() || id < 0)
+		return;
+	activeMeshes[id].scale = scale;
+
 }

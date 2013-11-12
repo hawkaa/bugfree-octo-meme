@@ -63,9 +63,9 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 		fscanf(file, "%f %f %f %i\n", &tmpColors[0], &tmpColors[1], &tmpColors[2], &tmpColors[3]);
 
 		// Create color vector
-		color.x = tmpColors[1];
-		color.y = tmpColors[2];
-		color.z = tmpColors[3];
+		color.x = tmpColors[1]/255;
+		color.y = tmpColors[2]/255;
+		color.z = tmpColors[3]/255;
 		color.w = 1.0f;
 
 		// Add color vector to colors vector
@@ -85,6 +85,22 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 		this->renderer->addImageObject(io);
 
 	}
+}
+
+//PGN loader
+GLuint Loader::loadTexture(const char* texture_file_path)
+{
+	FILE* file = fopen(texture_file_path, "r");
+
+	if(file == NULL)
+	{
+		printf("Object path not found %s", texture_file_path);
+		return 0;
+	}
+
+
+
+	return 0;
 }
 /*
 HÅKON SE

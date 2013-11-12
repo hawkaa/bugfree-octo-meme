@@ -27,11 +27,13 @@ struct MeshBuffer
 	GLuint colorBuffer;
 	GLuint normalBuffer;
 	GLuint indexBuffer;
+	GLuint texture;
 	int indexSize;
 	glm::vec3 translation;
 	glm::vec3 rotation;
 	glm::vec3 scale;
 };
+
 
 class Renderer
 {
@@ -43,6 +45,7 @@ public:
 	void invalidate(int);
 
 	void startMesh();
+
 	void addPointToMesh(glm::vec3& vertex, glm::vec4& color, glm::vec3& normal);
 	void addTriangleToMesh(unsigned int, unsigned int, unsigned int);
 	
@@ -50,10 +53,16 @@ public:
 	void addRotationToMesh(glm::vec3 rotation);
 	void addScaleToMesh(glm::vec3 scale);
 
-	void createEllipsoid(float x, float y, float radius, glm::vec4 color);
+	void addTextureToMesh(GLuint textureID);
+
+	int commitMesh();
 
 	void addImageObject(ImageObject& object);
-	int commitMesh();
+	void createEllipsoid(float x, float y, float radius, glm::vec4 color);	
+
+	void setBufferTranslation(int id, glm::vec3 translation);
+	void setBufferRotation(int id, glm::vec3 rotation);
+	void setBufferScale(int id, glm::vec3 scale);
 
 	void renderACube();
 
@@ -71,8 +80,13 @@ private:
 	GLuint viewHandle;
 
 	int currentid;
+	int textcurrentid;
+
 	bool meshstarted;
+	bool textstarted;
+
 	std::vector<MeshBuffer> activeMeshes;
+
 	Mesh uncommitedMesh;
 };
 
