@@ -17,7 +17,7 @@ function [] = PopTheNonStops(I, filename, colors, SE, shape)
     
     for i=1:length
        BW = RGBThreshold(I, colors{i}{2});
-       Vertices = GetGeom(BW, SE);
+       Vertices = GetGeom(BW, SE, true);
        for j=1:size(Vertices)
            fprintf(file, '%i %i %i %s %i\n', Vertices(j, 1), Vertices(j, 2), Vertices(j, 3), shape, i);
        end
