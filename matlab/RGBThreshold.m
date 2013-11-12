@@ -1,4 +1,4 @@
-function [ BW ] = RGBThreshold(I, RGB)
+    function [ BW ] = RGBThreshold(I, RGB)
     [r,c,d] = size(I);
     BW = zeros(r, c);
     for y = 1:r
