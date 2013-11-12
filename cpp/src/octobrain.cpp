@@ -14,10 +14,11 @@
 #define GLFW_DLL
 
 const char* Octobrain::objectsFileName = "objects.txt";
+const char* Octobrain::textureFileNames[10] = {"textures/0.bmp", "textures/1.bmp", "textures/2.bmp", "textures/3.bmp", "textures/4.bmp", "textures/5.bmp", "textures/6.bmp", "textures/7.bmp", "textures/8.bmp", "textures/9.bmp"};
 
 Octobrain::Octobrain(void)
 {
-
+	
 }
 
 Octobrain::~Octobrain(void)
@@ -63,7 +64,14 @@ void Octobrain::init()
 	this->renderer = new Renderer(this->loader, this->camera);	
 	this->loader->setRenderer(this->renderer);
 	this->loader->loadObjectsFromFile(Octobrain::objectsFileName);
+	this->text = new Text();
 
+	for(int i = 0; i < 10; ++i)
+	{
+		text->addNumberTexture(this->loader->loadBMP(textureFileNames[i]), i);
+	}
+
+	text->addNumber(250, glm::vec3(54,3,5));
 }
 
 void Octobrain::run()

@@ -15,7 +15,9 @@ struct Mesh
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec4> colors;
+	std::vector<glm::vec2> uvs;
 	std::vector<unsigned int> indices;
+	GLuint texture;
 	glm::vec3 translation;
 	glm::vec3 rotation;
 	glm::vec3 scale;
@@ -27,7 +29,8 @@ struct MeshBuffer
 	GLuint colorBuffer;
 	GLuint normalBuffer;
 	GLuint indexBuffer;
-	GLuint texture;
+	GLuint uvBuffer;
+	GLuint textureHandle;
 	int indexSize;
 	glm::vec3 translation;
 	glm::vec3 rotation;

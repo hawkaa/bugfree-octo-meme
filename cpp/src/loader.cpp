@@ -13,7 +13,6 @@
 #include <string.h>
 
 #include <GL/glew.h>
-#include <GL/
 #include "loader.h"
 #include "imageobject.h"
 
@@ -122,12 +121,13 @@ GLuint Loader::loadBMP(const char* imagepath)
 	unsigned int imageSize;
 	unsigned char* data;
 
-	printf("Loading texture ...");
+	printf("Loading texture ... %s", imagepath);
 
 	FILE* file = fopen(imagepath, "rb");
 	if(!file)
 	{
 		printf("Could not open image: %s\n", imagepath);
+		return 0;
 	}
 
 	// Check if header is valid
@@ -167,7 +167,7 @@ GLuint Loader::loadBMP(const char* imagepath)
 
 	applyFilter();
 
-	printf("Texture loaded succesfully");
+	printf("Texture loaded succesfully\n");
 
 	return textureId;
 }

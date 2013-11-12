@@ -152,8 +152,8 @@ void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
 			vertices.push_back(p);
 			normalize(p);
 			normals.push_back(p);
-			//colors.push_back(color);
-			colors.push_back(glm::vec4(p,1));
+			colors.push_back(color);
+			//colors.push_back(glm::vec4(p,1));
 		}
 	}
 
