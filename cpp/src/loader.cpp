@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include <GL/glew.h>
+#include <GL/
 #include "loader.h"
 #include "imageobject.h"
 
@@ -87,21 +88,90 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 	}
 }
 
-//PGN loader
-GLuint Loader::loadTexture(const char* texture_file_path)
-{
-	FILE* file = fopen(texture_file_path, "r");
 
-	if(file == NULL)
+void Loader::setFilter(Filter newFilter)
+{
+	filter = newFilter;		
+}
+
+void Loader::applyFilter()
+{
+	switch(filter)
 	{
-		printf("Object path not found %s", texture_file_path);
-		return 0;
+	case NONE:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	case BILINEAR:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	case TRILINEAR:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+}
+
+GLuint Loader::loadBMP(const char* imagepath)
+{
+	unsigned char header[54];
+	unsigned int dataPos;
+	unsigned int width, height;
+	unsigned int imageSize;
+	unsigned char* data;
+
+	printf("Loading texture ...");
+
+	FILE* file = fopen(imagepath, "rb");
+	if(!file)
+	{
+		printf("Could not open image: %s\n", imagepath);
 	}
 
+	// Check if header is valid
+	if(fread(header, 1, 54, file) != 54)
+	{
+		printf("%s's header is invalid.", imagepath);
+	}
 
+	if(header[0] != 'B' || header[1] != 'M')
+	{
+		printf("%s is not a BMP image", imagepath);
+	}
 
-	return 0;
+	dataPos = *(int*)&(header[0x0A]);
+	imageSize = *(int*)&(header[0x22]);
+	width = *(int*)&(header[0x12]);
+	height = *(int*)&(header[0x16]);
+
+	// Illformated BMP, make an assumption
+	if(imageSize == 0)
+		imageSize = width*height*3;
+
+	if(dataPos == 0)
+		dataPos = 54;
+	
+	data = new unsigned char[imageSize];
+
+	fread(data, 1, imageSize, file);
+
+	fclose(file);
+
+	GLuint textureId;
+	glGenTextures(1, &textureId);
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+
+	applyFilter();
+
+	printf("Texture loaded succesfully");
+
+	return textureId;
 }
+
 /*
 HÅKON SE
 */
