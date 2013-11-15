@@ -1,6 +1,6 @@
-    function [ BW ] = RGBThreshold(I, RGB)
+function [ BW ] = RGBThreshold(I, RGB)
     [r,c,d] = size(I);
-    BW = zeros(r, c);
+    BW = zeros(r, c, d);
     for y = 1:r
         for x = 1:c
            r = I(y,x,1);
@@ -15,8 +15,5 @@
            end
         end
     end
-    
-    
-    
 end
 
