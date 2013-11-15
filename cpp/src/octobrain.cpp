@@ -55,23 +55,25 @@ void Octobrain::init()
 	}
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glDepthFunc(GL_LESS);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	this->input = new Input(this->window);
-	this->loader = new Loader();
-	this->camera = new Camera(this->window, this->input);
-	this->renderer = new Renderer(this->loader, this->camera);	
-	this->loader->setRenderer(this->renderer);
-	this->loader->loadObjectsFromFile(Octobrain::objectsFileName);
 	this->text = new Text();
-
+	this->loader = new Loader();
+	this->loader->setFilter(NONE);
+	
 	for(int i = 0; i < 10; ++i)
 	{
 		text->addNumberTexture(this->loader->loadBMP(textureFileNames[i]), i);
 	}
 
-	text->addNumber(250, glm::vec3(54,3,5));
+	this->camera = new Camera(this->window, this->input);
+	this->renderer = new Renderer(this->loader, this->camera, this->text);	
+	this->loader->setRenderer(this->renderer);
+	this->loader->loadObjectsFromFile(Octobrain::objectsFileName);	
 }
 
 void Octobrain::run()
@@ -91,6 +93,7 @@ void Octobrain::run()
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 		input->update();
+		text->update(this->renderer, delta);
 		camera->move(delta);
 		glfwSetCursorPos(window, Octobrain::screenWidth/2, Octobrain::screenHeight/2);
 		renderer->invalidate();

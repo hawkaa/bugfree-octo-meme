@@ -83,7 +83,6 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 		}
 		ImageObject io = ImageObject(ImageObject::getObjectTypeFromString(s),x,y,r,colors[c-1]);
 		this->renderer->addImageObject(io);
-
 	}
 }
 
@@ -167,7 +166,7 @@ GLuint Loader::loadBMP(const char* imagepath)
 
 	applyFilter();
 
-	printf("Texture loaded succesfully\n");
+	printf(" - Texture loaded succesfully\n");
 
 	return textureId;
 }
