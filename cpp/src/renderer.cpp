@@ -319,7 +319,21 @@ void Renderer::addImageObject(ImageObject& object)
 	}
 }
 
-void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
+void Renderer::addImageObject(ImageObject& object, int count)
+{
+	switch(object.getType())
+	{
+	case CIRCLE:
+		createEllipsoid(object.getX(), object.getY(), object.getRadius(), object.getColor(), count);
+		break;
+	case TRIANGLE:
+	case SQUARE:
+	case POLYGON:
+		break;
+	}
+}
+
+void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color, int count)
 {
 	this->startMesh();
 	this->meshUsesIndexes(true);
@@ -382,7 +396,72 @@ void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
 	this->addTranslationToMesh(glm::vec3(x, y, 0)*(0.06f));
 	this->commitMesh();
 
-	this->text->addNumber(15, glm::vec3(x,y+15,0)*0.06f, this);
+	this->text->addNumber(count, glm::vec3(x,y+15,0)*0.06f, this);
+}
+
+
+void Renderer::createEllipsoid(float x, float y, float radius, glm::vec4 color)
+{
+	this->startMesh();
+	this->meshUsesIndexes(true);
+	
+	radius = radius/40;
+
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec4> colors;
+	std::vector<unsigned int> indices;
+
+	int a, b;
+	
+	a = radius;
+	b = 2;
+	int res = 10;
+
+	for(float i = -radius; i < radius+2*radius/res; i += 2*radius/res)
+	{
+		for(float theta = 0; theta < 2*3.14f-2*3.14/res; theta += 2*3.14/res)
+		{
+			float in = i/radius;
+
+			//Ninjafix
+			if(in > 1)
+			{
+				in = 1;
+			}
+
+			glm::vec3 p = glm::vec3(2*radius*sgn(radius)*sqrt(1-in*in)*cos(theta), 2*radius*sgn(radius)*sqrt(1-in*in)*sin(theta), i);
+			vertices.push_back(p);
+			normalize(p);
+			normals.push_back(p);
+			colors.push_back(color);
+			//colors.push_back(glm::vec4(p,1));
+		}
+	}
+
+	for(int i = 0; i < vertices.size()-res; ++i)
+	{
+		indices.push_back(i);
+		indices.push_back(i+res);
+		indices.push_back(i+1);
+
+		indices.push_back(i+res);
+		indices.push_back(i+res+1);
+		indices.push_back(i+1);
+	}
+
+	for(int i = 0; i < vertices.size(); ++i)
+	{
+		this->addPointToMesh(vertices[i], colors[i], normals[i]);
+	}
+
+	for(int j = 0; j < indices.size(); j+=3)
+	{
+		this->addTriangleToMesh(indices[j], indices[j+1], indices[j+2]);
+	}
+
+	this->addTranslationToMesh(glm::vec3(x, y, 0)*(0.06f));
+	this->commitMesh();
 }
 
 void Renderer::startMesh(int objectId)

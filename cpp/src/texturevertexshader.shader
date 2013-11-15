@@ -1,0 +1,32 @@
+#version 330
+
+in vec3 vertexPosition_modelspace;
+in vec4 vertexColor;
+in vec3 vertexNormal_modelspace;
+in vec2 vertexUV;
+
+out vec4 fragmentColor;
+out vec3 position_worldspace;
+out vec3 normal_cameraspace;
+out vec3 eyeDirection_cameraspace;
+out vec3 vertexNormal_worldspace;
+out vec2 UV;
+
+uniform mat4 MVP;
+uniform mat4 Model;
+uniform mat4 View;
+
+void main()
+{
+	gl_Position = MVP * vec4(vertexPosition_modelspace, 1);
+
+	position_worldspace = (Model * vec4(vertexPosition_modelspace, 1)).xyz;
+	vertexNormal_worldspace = (Model * vec4(vertexNormal_modelspace, 0)).xyz;
+	vec3 vertexPosition_cameraspace = (View * Model * vec4(vertexPosition_modelspace, 1)).xyz;
+	eyeDirection_cameraspace = vec3(0,0,0) - vertexPosition_cameraspace;
+
+	normal_cameraspace = (View * Model * vec4(vertexNormal_modelspace, 0)).xyz;	
+
+	UV = vertexUV;
+	fragmentColor = vertexColor;
+}

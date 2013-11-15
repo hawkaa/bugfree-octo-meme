@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -37,6 +38,8 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 	int numColors;
 	float tmpColors[4];
 	std::vector<glm::vec4> colors;
+	std::vector<unsigned int> colorCount;
+	std::vector<ImageObject> objects;
 	glm::vec4 color;
 
 	float x, y, r;
@@ -70,19 +73,29 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 
 		// Add color vector to colors vector
 		colors.push_back(color);
+		colorCount.push_back(0);
 	}
 
 	/*
 	 * Loop through end of file to find all the vertices
 	 */
+	
+	
 
 	while(true) {
 		res = fscanf(file, "%f %f %f %s %i\n", &x, &y, &r, &s, &c);
 		if(res == EOF) {
 			break;
 		}
-		ImageObject io = ImageObject(ImageObject::getObjectTypeFromString(s),x,y,r,colors[c-1]);
-		this->renderer->addImageObject(io);
+		colorCount[c-1]++;
+		objects.push_back(ImageObject(ImageObject::getObjectTypeFromString(s),x,y,r,colors[c-1], c-1));
+	}
+
+	std::vector<ImageObject>::iterator it;
+
+	for(it = objects.begin(); it != objects.end(); ++it)
+	{
+		renderer->addImageObject(*it, colorCount[it->getColorIndex()]);
 	}
 }
 

@@ -65,7 +65,6 @@ void Text::addNumber(int number, glm::vec3 position, Renderer* renderer)
 	{
 		int residue = number%10;
 		number /= 10;
-		printf("Number %i, residue %i\n", number, residue);
 		numbers.push_back(residue);
 	}
 

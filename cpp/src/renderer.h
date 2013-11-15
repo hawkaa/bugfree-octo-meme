@@ -95,6 +95,8 @@ public:
 	int commitMesh(int objectId);
 
 	void addImageObject(ImageObject& object);
+	void addImageObject(ImageObject& object, int count);
+	void createEllipsoid(float x, float y, float radius, glm::vec4 color, int count);
 	void createEllipsoid(float x, float y, float radius, glm::vec4 color);	
 
 	void setBufferTranslation(int id, glm::vec3 translation);
