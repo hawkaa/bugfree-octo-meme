@@ -63,12 +63,13 @@ void Loader::loadObjectsFromFile(const char* file_path) {
 	for(int i = 0; i < numColors; ++i)
 	{
 		// Read file
-		fscanf(file, "%f %f %f %i\n", &tmpColors[0], &tmpColors[1], &tmpColors[2], &tmpColors[3]);
+		fscanf(file, "%f %f %f %f\n", &tmpColors[0], &tmpColors[1], &tmpColors[2], &tmpColors[3]);
 
 		// Create color vector
 		color.x = tmpColors[1]/255;
 		color.y = tmpColors[2]/255;
 		color.z = tmpColors[3]/255;
+		printf("%i\n", color.z);
 		color.w = 1.0f;
 
 		// Add color vector to colors vector

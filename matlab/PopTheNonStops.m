@@ -14,6 +14,7 @@ function [] = PopTheNonStops(I, filename, colors, SE, shape, t)
     % Print the vertices   
     for i=1:length
        BW = RGBDistanceThreshold(I, colors{i,1}, colors{i,2}, t);
+       figure;imshow(BW);
        BW_Filled = imfill(BW);
        BW_1 = imerode(BW_Filled, SE);
        BW_2 = imdilate(BW_1, SE);
